@@ -37,7 +37,6 @@ prompt_for_input() {
   echo "7. Platform Management"
   echo "8. Refinery"
   echo "9. Supply Chain Department"
-  echo "10. Sustainability"
   echo "11. Tenant Admin"
   read -p "Select Business Unit (1-11): " business_unit
 
@@ -64,24 +63,14 @@ prompt_for_input() {
   # Construct the commit message
   commit_message="[$jira_issue_no] - Module: $module, Business Unit: $business_unit, Use Case: $use_case_id, Summary: $change_summary"
 
-  # Display the commit message for confirmation
-  echo "Generated Commit Message: $commit_message"
-  read -p "Do you want to proceed with this commit message? (y/n): " confirm
+  # Save the commit message to the COMMIT_MSG file
+  echo "$commit_message" > "$1"
 
-  if [[ "$confirm" == "y" ]]; then
-    # Add all changes to the staging area
-    git add .
-
-    # Commit with the generated message
-    git commit -m "$commit_message"
-
-    # Push the changes to the remote repository
-    git push origin "$branch_name"
-    echo "Changes have been committed and pushed successfully."
-  else
-    echo "Commit aborted."
-  fi
+  # Automatically add and push changes
+  git add .
+  git push origin "$branch_name"
+  echo "Changes have been committed and pushed successfully."
 }
 
 # Execute the function to start the process
-prompt_for_input
+prompt_for_input "$1"
