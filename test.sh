@@ -6,42 +6,58 @@ commit_msg_file="/home/ubuntu/test-repo/.git/COMMIT_EDITMSG"
 # Function to display options and prompt for input
 prompt_for_input() {
     echo "A. Select Module/Functional Category:"
-    echo "1. Account & User Management"
-    echo "2. Account Management"
-    echo "3. Allocation Management"
-    echo "4. Allocation/Sourcing Management"
-    echo "5. Certificate Configuration"
-    echo "6. Contract Management"
-    echo "7. Customer Management"
-    echo "8. Dashboard"
-    echo "9. Issue Reporting"
-    echo "10. Logistic Management"
-    echo "11. Product & Configuration"
-    echo "12. Production Management"
-    echo "13. Shipment Dashboard"
-    echo "14. Shipment Management"
-    echo "15. Sourcing & Contract Management"
-    echo "16. Spatial Monitoring And Analysis"
-    echo "17. Supplier Profile Management"
-    echo "18. Task & Workflow Management"
-    echo "19. Tenant Management"
-    echo "20. Traceability Management"
-    echo "21. Notification Management"
-    echo "22. Others"
-    read -p "Select Module/Functional Category (1-22): " module
+    options=("Account & User Management"
+             "Account Management"
+             "Allocation Management"
+             "Allocation/Sourcing Management"
+             "Certificate Configuration"
+             "Contract Management"
+             "Customer Management"
+             "Dashboard"
+             "Issue Reporting"
+             "Logistic Management"
+             "Product & Configuration"
+             "Production Management"
+             "Shipment Dashboard"
+             "Shipment Management"
+             "Sourcing & Contract Management"
+             "Spatial Monitoring And Analysis"
+             "Supplier Profile Management"
+             "Task & Workflow Management"
+             "Tenant Management"
+             "Traceability Management"
+             "Notification Management"
+             "Others")
+    
+    select module in "${options[@]}"; do
+        if [[ -n "$module" ]]; then
+            echo "Selected Module: $module"
+            break
+        else
+            echo "Invalid option. Please try again."
+        fi
+    done
 
     echo "B. Select Business Unit:"
-    echo "1. Tenant"
-    echo "2. Customer"
-    echo "3. KCP"
-    echo "4. Mill"
-    echo "5. Mill/KCP"
-    echo "6. Platform Admin"
-    echo "7. Platform Management"
-    echo "8. Refinery"
-    echo "9. Supply Chain Department"
-    echo "11. Tenant Admin"
-    read -p "Select Business Unit (1-11): " business_unit
+    business_units=("Tenant"
+                    "Customer"
+                    "KCP"
+                    "Mill"
+                    "Mill/KCP"
+                    "Platform Admin"
+                    "Platform Management"
+                    "Refinery"
+                    "Supply Chain Department"
+                    "Tenant Admin")
+
+    select business_unit in "${business_units[@]}"; do
+        if [[ -n "$business_unit" ]]; then
+            echo "Selected Business Unit: $business_unit"
+            break
+        else
+            echo "Invalid option. Please try again."
+        fi
+    done
 
     read -p "C. Enter Use Case ID: " use_case_id
     read -p "D. Enter JIRA Issue No: " jira_issue_no
@@ -66,9 +82,19 @@ prompt_for_input() {
     # Construct the commit message
     commit_message="[$jira_issue_no] - Module: $module, Business Unit: $business_unit, Use Case: $use_case_id, Summary: $change_summary"
 
+    # Log the commit message for debugging
+    echo "Constructed Commit Message: $commit_message"
+
     # Write the commit message to the commit message file
     echo "$commit_message" > "$commit_msg_file"
 }
 
 # Execute the function to start the process
 prompt_for_input
+
+# Confirm that the commit message has been correctly written
+if [[ -f "$commit_msg_file" ]]; then
+    echo "Commit message successfully written to $commit_msg_file."
+else
+    echo "Failed to write commit message."
+fi
