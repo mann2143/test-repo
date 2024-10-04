@@ -1,9 +1,10 @@
-#!/bin/bash
+ #!/bin/bash
+
+# Path to the commit message file
+commit_msg_file="/home/ubuntu/test-repo/.git/COMMIT_EDITMSG"
 
 # Function to display options and prompt for input
 prompt_for_input() {
-
-    # Prompt for Module/Functional Category selection
     echo "A. Select Module/Functional Category:"
     echo "1. Account & User Management"
     echo "2. Account Management"
@@ -29,7 +30,6 @@ prompt_for_input() {
     echo "22. Others"
     read -p "Select Module/Functional Category (1-22): " module
 
-    # Prompt for Business Unit selection
     echo "B. Select Business Unit:"
     echo "1. Tenant"
     echo "2. Customer"
@@ -43,15 +43,9 @@ prompt_for_input() {
     echo "11. Tenant Admin"
     read -p "Select Business Unit (1-11): " business_unit
 
-    # Prompt for Use Case ID
     read -p "C. Enter Use Case ID: " use_case_id
-
-    # Prompt for JIRA Issue No
     read -p "D. Enter JIRA Issue No: " jira_issue_no
-
-    # Prompt for Change Summary
-    echo "E. Provide Change Summary (max 50 words):"
-    read -p "Change Summary: " change_summary
+    read -p "E. Provide Change Summary (max 50 words): " change_summary
 
     # Check word count for change summary
     word_count=$(echo $change_summary | wc -w)
@@ -72,21 +66,10 @@ prompt_for_input() {
     # Construct the commit message
     commit_message="[$jira_issue_no] - Module: $module, Business Unit: $business_unit, Use Case: $use_case_id, Summary: $change_summary"
 
-    # Display the generated commit message
-    echo -e "\nGenerated Commit Message:"
-    echo "$commit_message"
-    echo -e "\n"
-
-    # Confirm if the user wants to proceed
-    read -p "Do you want to proceed with this commit message? (y/n): " confirm
-
-    if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
-        # Execute git commit using the generated message
-        git commit -m "$commit_message"
-    else
-        echo "Commit aborted by user."
-    fi
+    # Write the commit message to the commit message file
+    echo "$commit_message" > "$commit_msg_file"
 }
 
 # Execute the function to start the process
 prompt_for_input
+
