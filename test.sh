@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+
 # Path to the commit message file
 commit_msg_file="/home/ubuntu/test-repo/.git/COMMIT_EDITMSG"
 
