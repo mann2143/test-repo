@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Path to the commit message file
-commit_msg_file="/home/ubuntu/test-repo/.git/COMMIT_EDITMSG"
-
 # Function to display options and prompt for input
 prompt_for_input() {
 
@@ -54,7 +51,6 @@ prompt_for_input() {
 
     # Prompt for Change Summary
     echo "E. Provide Change Summary (max 50 words):"
-    echo "Please provide a brief description of your changes."
     read -p "Change Summary: " change_summary
 
     # Check word count for change summary
@@ -76,10 +72,20 @@ prompt_for_input() {
     # Construct the commit message
     commit_message="[$jira_issue_no] - Module: $module, Business Unit: $business_unit, Use Case: $use_case_id, Summary: $change_summary"
 
-    # Write the commit message to the commit message file
-    echo "$commit_message" > "$commit_msg_file"
+    # Display the generated commit message
+    echo -e "\nGenerated Commit Message:"
+    echo "$commit_message"
+    echo -e "\n"
 
-    echo "Commit message has been generated and written to $commit_msg_file"
+    # Confirm if the user wants to proceed
+    read -p "Do you want to proceed with this commit message? (y/n): " confirm
+
+    if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+        # Execute git commit using the generated message
+        git commit -m "$commit_message"
+    else
+        echo "Commit aborted by user."
+    fi
 }
 
 # Execute the function to start the process
