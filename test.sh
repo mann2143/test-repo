@@ -1,4 +1,4 @@
- #!/bin/bash
+#!/bin/bash
 
 # Path to the commit message file
 commit_msg_file="/home/ubuntu/test-repo/.git/COMMIT_EDITMSG"
@@ -72,4 +72,3 @@ prompt_for_input() {
 
 # Execute the function to start the process
 prompt_for_input
-
